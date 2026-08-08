@@ -1,3 +1,5 @@
+-- name: АппВершн
+-- author: DarkLord
 api.log("Extera photon version mod loaded")
 
 -- Настройка Photon AppVersion (0 = выкл / оставить родную)
