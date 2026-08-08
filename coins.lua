@@ -1,50 +1,25 @@
--- name: ДохераМонет
+-- name: Монеты (Coins)
 -- author: FChick
-api.log("coins_test.lua loaded (Extera)")
+-- === Монеты (Coins) — addon by FChick ===
+-- Плавающая кнопка "$" + окно с слайдером суммы и кнопкой "ВЫДАТЬ".
+-- Выдача идёт через нативный авто-поиск GiveMoney/currencyBalance.
 
-api.setting("Сумма монет", 1000, 1000000)
-api.setting("Максимум", false)
+api.log("Coins mod loaded")
 
-local LocalStore = nil
-local getBalance = nil
+api.setting("enabled", true)       -- вкл/выкл кнопку монет
 
-local function balance()
-    if not getBalance then
-        LocalStore = api.getClassFull("", "LocalStore")
-        getBalance = api.getMethodInfo(LocalStore, "get_currencyBalance")
-    end
-    return api.call(getBalance, nil, 0)
-end
-
-local function giveCoins()
-    local amount = math.floor(api.setting("Сумма монет"))
-    if api.setting("Максимум") then
-        amount = 100000000
-    end
-    local before = balance()
-    local ok = pcall(function()
-        api.LocalStore_GiveMoney(nil, amount)
-    end)
-    local after = balance()
-    api.log("before=" .. tostring(before) .. " GiveMoney(" .. amount .. ")=" .. tostring(ok) ..
-            " after=" .. tostring(after))
-    return amount
-end
-
-
-api.addButton("Выдать монеты", function()
-    local amount = giveCoins()
-    return "coins +" .. amount
+-- Кнопка в меню и в майн (внутриигровая кнопка открывается через натив).
+api.guiButton("🪙 Монеты", function()
+    api.coinWindow()
 end)
 
-
-api.chatCommand(".coins", function(args)
-    local a = tonumber(args)
-    if a and a > 0 then
-        api.setting("Сумма монет", a)
+api.chatCommand("coins", function(args)
+    local n = tonumber(args and args[1] or "100000")
+    if not n or n <= 0 then
+        return "usage: .coins <сумма>"
     end
-    local amount = giveCoins()
-    return "coins +" .. amount
+    api.coinWindow()
+    return "окно монет открыто, выдача " .. tostring(n)
 end)
 
-api.log("coins_test.lua ready: button + cmd .coins")
+api.log("Coins ready: кнопка меню, .coins, окно со слайдером")
