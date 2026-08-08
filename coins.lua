@@ -1,6 +1,5 @@
--- === Монеты (Coins) — addon by FChick ===
--- Плавающая кнопка "$" + окно с слайдером суммы и кнопкой "ВЫДАТЬ".
--- Выдача идёт через нативный авто-поиск GiveMoney/currencyBalance.
+-- name: ДохераМонет
+-- author: FChick
 
 api.log("Coins mod loaded")
 
