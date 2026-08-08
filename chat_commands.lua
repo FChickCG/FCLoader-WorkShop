@@ -1,3 +1,5 @@
+-- name: ChatCommands
+-- author: DarkLord
 api.log("Extera chat commands mod loaded")
 
 api.chatCommand("test", function(args)
